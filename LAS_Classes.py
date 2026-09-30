@@ -65,4 +65,29 @@ class InfoCounter(LogFileManager):
         self.number_of_distinctive_users = len(self.distinctive_user_set)
         return self.number_of_distinctive_users
 
+    def number_of_status_login(self):
+
+        for numerator in self.log_file_as_list:
+            if numerator[3]=="FAILED":
+                self.number_of_failed_logins+=1
+            elif numerator[3]=="SUCCESS":
+                self.number_of_successful_logins+=1
+        return self.number_of_successful_logins,self.number_of_failed_logins
+
+    def count_most_frequent_ip_and_user(self):
+        all_ip_we_have=[]
+        all_user_we_have=[]
+        for numerator in self.log_file_as_list:
+            all_ip_we_have.append(numerator[1])
+            all_user_we_have.append(numerator[2])
+
+        self.most_frequent_ip=dict(Counter(all_ip_we_have).most_common(1))
+        self.most_frequent_user=dict(Counter(all_user_we_have).most_common(1))
+        print(self.most_frequent_user)
+        print(self.most_frequent_ip)
+
+        
+
+
+
     
