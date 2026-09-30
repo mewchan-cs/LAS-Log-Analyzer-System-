@@ -1,75 +1,68 @@
 from collections import Counter
-class Log_File_Manager:
-    def __init__(self,Log_File_As_List):
-        self.Log_File_As_List=Log_File_As_List
-        self.Distinctive_Ip_Set=set()
-        self.Distinctive_User_Set=set()
-        self.Ip_Info_Dictionary={}
-        self.User_Info_Dictionary={}
 
 
-    def Distinctive_Ip(self):
-        for member in self.Log_File_As_List:
-            self.Distinctive_Ip_Set.add(member[1])
+class LogFileManager:
+    def __init__(self, log_file_as_list):
+        self.log_file_as_list = log_file_as_list
+        self.distinctive_ip_set = set()
+        self.distinctive_user_set = set()
+        self.ip_info_dictionary = {}
+        self.user_info_dictionary = {}
 
-        return self.Distinctive_Ip_Set
+    def extract_distinctive_ips(self):
+        for member in self.log_file_as_list:
+            self.distinctive_ip_set.add(member[1])
+        return self.distinctive_ip_set
 
+    def extract_distinctive_users(self):
+        for member in self.log_file_as_list:
+            self.distinctive_user_set.add(member[2])
+        return self.distinctive_user_set
 
-    def Distinctive_User(self):
-        for member in self.Log_File_As_List:
-            self.Distinctive_User_Set.add(member[2])
+    def make_ip_dictionary(self):
+        for ip in self.distinctive_ip_set:
+            copy_list = []
+            for member1 in self.log_file_as_list:
+                copy_member = member1.copy()
+                if ip in member1:
+                    del copy_member[1]
+                    copy_list.append(copy_member)
 
-        return self.Distinctive_User_Set
+            self.ip_info_dictionary[ip] = copy_list
+        return self.ip_info_dictionary
 
+    def make_user_dictionary(self):
+        for user in self.distinctive_user_set:
+            copy_list = []
+            for member1 in self.log_file_as_list:
+                copy_member = member1.copy()
+                if user in member1:
+                    del copy_member[2]
+                    copy_list.append(copy_member)
 
-    def Ip_Dictionary_Maker(self):
-        Copy_List=[]
-        for member in self.Distinctive_Ip_Set:
-            Ip=member
-            for member1 in self.Log_File_As_List:
-                Copy_Member=member1.copy()
-                if Ip in member1:
-                    del Copy_Member[1]
-                    Copy_List.append(Copy_Member)
-                    
-            self.Ip_Info_Dictionary[Ip]=Copy_List.copy()
-            Copy_List.clear()
-
-        return self.Ip_Info_Dictionary
-        
-
-    def User_Dictionary_Maker(self):
-        Copy_List=[]
-        for member in self.Distinctive_User_Set:
-            User=member
-            for member1 in self.Log_File_As_List:
-                Copy_Member=member1.copy()
-                if User in member1:
-                    del Copy_Member[2]
-                    Copy_List.append(Copy_Member)
-
-            self.User_Info_Dictionary[User]=Copy_List.copy()
-            Copy_List.clear()
-        print(self.User_Info_Dictionary)
-
-        return self.User_Info_Dictionary
+            self.user_info_dictionary[user] = copy_list
+            
+        print(self.user_info_dictionary)
+        return self.user_info_dictionary
 
 
+class InfoCounter(LogFileManager):
+    def __init__(self, log_file_as_list):
+        super().__init__(log_file_as_list)
+        self.number_of_distinctive_ips = 0
+        self.number_of_distinctive_users = 0
+        self.number_of_all_records = 0
+        self.number_of_failed_logins = 0
+        self.number_of_successful_logins = 0
+        self.most_frequent_ip = None
+        self.most_frequent_user = None
 
+    def count_distinctive_ips(self):
+        self.number_of_distinctive_ips = len(self.distinctive_ip_set)
+        return self.number_of_distinctive_ips
 
+    def count_distinctive_users(self):
+        self.number_of_distinctive_users = len(self.distinctive_user_set)
+        return self.number_of_distinctive_users
 
-
-class InfoCounter(Log_File_Manager):
-    def __init__(self,Log_File_as_List):
-        super().__init__(Log_File_as_List)
-        self.Number_Of_Distinction_Ip=0
-        self.Number_Of_Distinction_User=0
-        self.Number_Of_All_Records=0
-        self.Number_Of_Faild_Login=0
-        self.Number_Of_Successfull_Login=0
-        self.Most_Frequent_IP=None
-        self.Most_Frequent_User=None
-
-    def distinctive_ip(self):
-        self.Number_Of_Distinction_Ip=len(self.Distinctive_Ip_Set)
-        print(self.Number_Of_Distinction_Ip)
+    
