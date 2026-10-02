@@ -42,7 +42,6 @@ class LogFileManager:
 
             self.user_info_dictionary[user] = copy_list
             
-        print(self.user_info_dictionary)
         return self.user_info_dictionary
 
 

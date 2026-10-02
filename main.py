@@ -1,4 +1,5 @@
 from LAS_Classes import InfoCounter
+import Search_User
 
 log_file_path = input("Please enter your log file's path:\n")
 
