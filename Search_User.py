@@ -1,7 +1,7 @@
-def search_user(ip_dictionary,user_dictionary):
+def search_user(ip_dictionary,user_dictionary,ipsusdic):
     search_choise =input("Search by ip or search by user (i for ip and u for user)?\n")
 
-    def search_by_ip(ip_dictionary):
+    def search_by_ip(ip_dictionary,ipsusdic):
         selected_ip=input("Enter the ip you want:\n")
         if selected_ip not in ip_dictionary:
             print("This ip not found.....")
@@ -10,6 +10,7 @@ def search_user(ip_dictionary,user_dictionary):
                 print(f"ip:{i}:\n")
                 for j in ip_dictionary[i]:
                     print(f"{j}\n")
+        return selected_ip
             
 
     def search_by_user(user_dictionary):
@@ -23,8 +24,18 @@ def search_user(ip_dictionary,user_dictionary):
                     print(f"{j}\n")
 
 
+    def suspicious_ip(ipsusdic,selected_ip):
+        for i in ipsusdic:
+            if selected_ip==i and ipsusdic[i]>5:
+                print("This ip is suspicious!!!!!")
+            else:
+                continue
+
+
     if search_choise=="i":
-        search_by_ip(ip_dictionary)
+        search_by_ip(ip_dictionary,ipsusdic)
+        suspicious_ip(ipsusdic,selected_ip)
+
 
     elif search_choise=="u":
         search_by_user(user_dictionary)
